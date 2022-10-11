@@ -6,7 +6,7 @@ class User < ApplicationRecord
     validates :admin, inclusion: { in: [true, false] }
     validates :password, length: { minimum: 6, allow_nil: true }
     before_validation :ensure_session_token, :ensure_user_id
-    validate :ensure_valid_mail
+    validate :ensure_valid_mail, :ensure_valid_phone_number
 
     after_initialize do |user|
         user.session_token ||= User.generate_session_token
@@ -62,4 +62,10 @@ class User < ApplicationRecord
             errors.add(:mail, "is not valid.")
         end
     end
+
+    def ensure_valid_phone_number
+        if (self.phone / 1000000000) == 0 || (self.phone / 1000000000) > 9
+            errors.add(:phone_number, "is not valid.")
+        end
+    end 
 end

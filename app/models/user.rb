@@ -6,6 +6,7 @@ class User < ApplicationRecord
     validates :admin, inclusion: { in: [true, false] }
     validates :password, length: { minimum: 6, allow_nil: true }
     before_validation :ensure_session_token, :ensure_user_id
+    validate :ensure_valid_mail
 
     after_initialize do |user|
         user.session_token ||= User.generate_session_token
@@ -55,4 +56,10 @@ class User < ApplicationRecord
         
         self.user_id = user_id
     end 
+
+    def ensure_valid_mail
+        if !(self.mail =~ URI::MailTo::EMAIL_REGEXP)
+            errors.add(:mail, "is not valid.")
+        end
+    end
 end

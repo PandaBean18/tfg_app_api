@@ -21,7 +21,15 @@ class User < ApplicationRecord
     end
 
     def self.generate_session_token
-        SecureRandom::urlsafe_base64(16)
+        session_token = SecureRandom::urlsafe_base64(16)
+        user = User.find_by(session_token: session_token)
+
+        while user 
+            session_token = SecureRandom::urlsafe_base64(16)
+            user = User.find_by(session_token: session_token)
+        end
+
+        return session_token
     end 
 
     def password=(password)

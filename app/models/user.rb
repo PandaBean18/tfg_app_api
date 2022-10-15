@@ -72,7 +72,7 @@ class User < ApplicationRecord
     end
 
     def ensure_valid_phone_number
-        if self.phone.class == Integer && ((self.phone / 1000000000) == 0 || (self.phone / 1000000000) > 9)
+        if self.phone.class == String && ((self.phone.to_i / 1000000000) == 0 || (self.phone.to_i / 1000000000) > 9)
             errors.add(:phone_number, "is not valid.")
         end
     end 

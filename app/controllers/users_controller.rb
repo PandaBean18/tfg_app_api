@@ -21,11 +21,22 @@ class UsersController < ApplicationController
         )
 
         if user.save
-            render json: {user_id: user.user_id}, status: 200
+            render json: {status: 200, user_id: user.user_id}, status: 200
         else 
-            render json: {error: user.errors.full_messages[0]}, status: 400
+            render json: {status: 400, error: user.errors.full_messages[0]}, status: 400
         end
     end 
+
+    def show 
+        user_id = params[:id]
+        user = User.find_by(user_id: user_id)
+
+        if user 
+            render json: {status: 200, user: user}, status: 200
+        else 
+            render json: {status: 404}, status: 404
+        end
+    end
 
     private
 

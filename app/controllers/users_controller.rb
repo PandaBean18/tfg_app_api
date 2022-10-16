@@ -21,7 +21,7 @@ class UsersController < ApplicationController
         )
 
         if user.save
-            render json: {status: 200, user_id: user.user_id}, status: 200
+            render json: {status: 200, session_token: user.session_token}, status: 200
         else 
             render json: {status: 400, error: user.errors.full_messages[0]}, status: 400
         end
@@ -30,7 +30,7 @@ class UsersController < ApplicationController
     def show 
         user_id = params[:id]
         user = User.find_by(user_id: user_id)
-
+        puts params
         if user 
             render json: {status: 200, user: user}, status: 200
         else 
@@ -38,9 +38,30 @@ class UsersController < ApplicationController
         end
     end
 
+    def update
+        user_id = params[:id]
+        user = User.find_by(user_id: user_id)
+
+        if !user 
+            render json: {status: 404}, status: 404 
+        end 
+
+        id = user.id 
+
+        if user.update(edit_user_params)
+            render json: {status: 200, user: user}, status: 200
+        else  
+            render json: {status: 400, error: user.errors.full_messages[0]}, status: 400 
+        end 
+    end 
+
     private
 
     def user_params
         return params.require(:user).permit(:first_name, :last_name, :username, :password, :mail, :phone)
+    end 
+
+    def edit_user_params 
+        return params.require(:user).permit(:first_name, :last_name, :username, :mail, :phone)
     end 
 end

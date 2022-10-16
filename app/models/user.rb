@@ -54,6 +54,10 @@ class User < ApplicationRecord
     end
 
     def ensure_user_id
+        if self.user_id
+            return nil 
+        end 
+        
         user_id = SecureRandom::urlsafe_base64(8)
         user = User.find_by(user_id: user_id)
 

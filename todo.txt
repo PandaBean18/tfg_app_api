@@ -1,0 +1,3 @@
+1. edit password (users controller)
+2. destroy user (users controller)
+3. sessions controller 

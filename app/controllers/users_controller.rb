@@ -46,14 +46,27 @@ class UsersController < ApplicationController
             render json: {status: 404}, status: 404 
         end 
 
-        id = user.id 
-
         if user.update(edit_user_params)
             render json: {status: 200, user: user}, status: 200
         else  
             render json: {status: 400, error: user.errors.full_messages[0]}, status: 400 
         end 
     end 
+
+    def update_password
+        user_id = params[:id]
+        user  = User.find_by(user_id: user_id)
+
+        if !user 
+            render json: {status: 404}, status: 404
+        end 
+
+        if user.update(edit_user_password_params)
+            render json: {status: 200, user: user}, status: 200
+        else  
+            render json: {status: 400, error: user.errors.full_messages[0]}, status: 400 
+        end 
+    end
 
     private
 
@@ -64,4 +77,8 @@ class UsersController < ApplicationController
     def edit_user_params 
         return params.require(:user).permit(:first_name, :last_name, :username, :mail, :phone)
     end 
+
+    def edit_user_password_params
+        return params.require(:user).permit(:password)
+    end
 end

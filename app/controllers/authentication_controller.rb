@@ -24,6 +24,15 @@ class AuthenticationController < ApplicationController
         end        
     end
 
+    def logout 
+        if @current_user
+            @current_user.reset_session_token!
+            render json: {status: 200}, status: 200
+        else 
+            render json: {status: 403}, status: 403
+        end 
+    end 
+
     private 
 
     def login_params 

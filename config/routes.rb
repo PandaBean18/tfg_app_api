@@ -6,4 +6,5 @@ Rails.application.routes.draw do
     delete('/user', to: 'user#destroy')
     patch('/user/update_password', to: 'users#update_password')
     post('/auth/login', to: 'authentication#login')
+    post('/logout', to: 'authentication#logout')
 end

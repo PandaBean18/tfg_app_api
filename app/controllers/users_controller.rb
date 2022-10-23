@@ -35,7 +35,7 @@ class UsersController < ApplicationController
 
             render json: {status: 200, user: user, token: @new_token, refresh_token: @new_refresh_token}, status: 200
         else 
-            render json: {status: 400, error: user.errors.full_messages[0]}, status: 400
+            render json: {status: 400, error: user.errors.full_messages[0], token: @new_token, refresh_token: @new_refresh_token}, status: 400
         end
     end 
 
@@ -49,7 +49,7 @@ class UsersController < ApplicationController
             admin: @current_user.admin, 
             created_at: @current_user.created_at, 
         }
-        render json: user, status: 200 
+        render json: {user: user, token: @new_token, refresh_token: @new_refresh_token}, status: 200 
     end
 
     def update
@@ -63,17 +63,17 @@ class UsersController < ApplicationController
                 admin: @current_user.admin, 
                 created_at: @current_user.created_at, 
             }
-            render json: user, status: 200 
+            render json: {user: user, token: @new_token, refresh_token: @new_refresh_token} , status: 200 
         else  
-            render json: {status: 422, error: @current_user.errors.full_messages[0]}, status: :unprocessable_entity 
+            render json: {status: 422, error: @current_user.errors.full_messages[0], token: @new_token, refresh_token: @new_refresh_token}, status: :unprocessable_entity 
         end 
     end 
 
     def update_password
         if @current_user.update(edit_user_password_params)
-            render json: {status: 200}, status: 200
+            render json: {status: 200, token: @new_token, refresh_token: @new_refresh_token}, status: 200
         else  
-            render json: {status: 422, error: @current_user.errors.full_messages[0]}, status: :unprocessable_entity 
+            render json: {status: 422, error: @current_user.errors.full_messages[0], token: @new_token, refresh_token: @new_refresh_token}, status: :unprocessable_entity 
         end 
     end
 

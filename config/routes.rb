@@ -4,6 +4,6 @@ Rails.application.routes.draw do
     post('/user', to: 'users#create')
     patch('/user', to: 'users#update')
     delete('/user', to: 'user#destroy')
-    patch('/users/:id/update_password', to: 'users#update_password')
+    patch('/user/update_password', to: 'users#update_password')
     post('/auth/login', to: 'authentication#login')
 end

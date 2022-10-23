@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+    before_action :authorize_request, except: :create
+
     def create 
         current_user_params = user_params
         first_name = current_user_params[:first_name]
@@ -21,51 +23,63 @@ class UsersController < ApplicationController
         )
 
         if user.save
-            render json: {status: 200, session_token: user.session_token}, status: 200
+            session_token = user.session_token
+            payload = {
+                session: session_token, 
+                refresh_token: false 
+            }
+
+            @new_token = JsonWebToken.encode(payload, 24.hours.from_now)
+            payload[:refresh_token] = true 
+            @new_refresh_token = JsonWebToken.encode(payload, 480.hours.from_now)
+
+            render json: {status: 200, user: user, token: @new_token, refresh_token: @new_refresh_token}, status: 200
         else 
             render json: {status: 400, error: user.errors.full_messages[0]}, status: 400
         end
     end 
 
     def show 
-        user_id = params[:id]
-        user = User.find_by(user_id: user_id)
-        puts params
-        if user 
-            render json: {status: 200, user: user}, status: 200
-        else 
-            render json: {status: 404}, status: 404
-        end
+        user = {
+            first_name: @current_user.first_name,
+            last_name: @current_user.last_name, 
+            username: @current_user.username, 
+            mail: @current_user.mail, 
+            phone: @current_user.phone, 
+            admin: @current_user.admin, 
+            created_at: @current_user.created_at, 
+        }
+        render json: user, status: 200 
     end
 
     def update
-        user_id = params[:id]
-        user = User.find_by(user_id: user_id)
-
-        if !user 
-            render json: {status: 404}, status: 404 
-        end 
-
-        if user.update(edit_user_params)
-            render json: {status: 200, user: user}, status: 200
+        if @current_user.update(edit_user_params)
+            user = {
+                first_name: @current_user.first_name,
+                last_name: @current_user.last_name, 
+                username: @current_user.username, 
+                mail: @current_user.mail, 
+                phone: @current_user.phone, 
+                admin: @current_user.admin, 
+                created_at: @current_user.created_at, 
+            }
+            render json: user, status: 200 
         else  
-            render json: {status: 400, error: user.errors.full_messages[0]}, status: 400 
+            render json: {status: 422, error: @current_user.errors.full_messages[0]}, status: :unprocessable_entity 
         end 
     end 
 
     def update_password
-        user_id = params[:id]
-        user  = User.find_by(user_id: user_id)
-
-        if !user 
-            render json: {status: 404}, status: 404
-        end 
-
-        if user.update(edit_user_password_params)
-            render json: {status: 200, user: user}, status: 200
+        if @current_user.update(edit_user_password_params)
+            render json: {status: 200}, status: 200
         else  
-            render json: {status: 400, error: user.errors.full_messages[0]}, status: 400 
+            render json: {status: 422, error: @current_user.errors.full_messages[0]}, status: :unprocessable_entity 
         end 
+    end
+
+    def destroy 
+        @current_user.destroy
+        render json: {status: 200}
     end
 
     private

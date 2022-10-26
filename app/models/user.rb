@@ -8,6 +8,14 @@ class User < ApplicationRecord
     before_validation :ensure_session_token, :ensure_user_id
     validate :ensure_valid_mail, :ensure_valid_phone_number
 
+    has_many(
+        :posts, 
+        class_name: 'Post',
+        foreign_key: 'author_id', 
+        primary_key: 'user_id', 
+        dependent: :destroy
+    )
+
     after_initialize do |user|
         user.session_token ||= User.generate_session_token
     end

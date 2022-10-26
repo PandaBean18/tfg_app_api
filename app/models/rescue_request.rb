@@ -1,6 +1,6 @@
 class RescueRequest < ApplicationRecord
-    validates :post_id, :author_id, :heading, :description, :reference_number, :longitude, :latitude, presence: true 
-    validates :post_id, uniqueness: true 
+    validates :rescue_request_id, :author_id, :heading, :description, :reference_number, :longitude, :latitude, presence: true 
+    validates :rescue_request_id, uniqueness: true 
     validate :ensure_valid_latitude, :ensure_valid_longitude, :ensure_valid_phone_number
     before_validation :ensure_post_id
 
@@ -13,20 +13,20 @@ class RescueRequest < ApplicationRecord
 
     private 
 
-    def ensure_post_id
-        if self.post_id
+    def ensure_rescue_requesr_id
+        if self.rescue_request_id
             return nil 
         end 
 
-        post_id = SecureRandom::urlsafe_base64(8)
-        post = Post.find_by(post_id: post_id)
+        rescue_request_id = SecureRandom::urlsafe_base64(8)
+        rescue_request = RescueRequest.find_by(rescue_request_id: rescue_request_id)
 
         while post 
-            post_id = SecureRandom::urlsafe_base64(8)
-            post = Post.find_by(post_id: post_id)
+            rescue_request_id = SecureRandom::urlsafe_base64(8)
+            rescue_request = RescueRequest.find_by(post_id: post_id)
         end 
 
-        self.post_id = post_id
+        self.rescue_request_id = rescue_request_id
     end
 
     def ensure_valid_latitude

@@ -12,7 +12,6 @@ class ApplicationController < ActionController::API
         refresh_token = refresh_token.split(' ').last if refresh_token 
 
         decoded_token = JsonWebToken.valid_token?(token)
-        puts decoded_token
         if decoded_token
             @current_user = User.find_by(session_token: decoded_token[:session])
             if !@current_user 

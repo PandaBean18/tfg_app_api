@@ -33,6 +33,16 @@ class UsersController < ApplicationController
             payload[:refresh_token] = true 
             @new_refresh_token = JsonWebToken.encode(payload, 480.hours.from_now)
 
+            user = {
+            first_name: user.first_name,
+            last_name: user.last_name, 
+            username: user.username, 
+            mail: user.mail, 
+            phone: user.phone, 
+            admin: user.admin, 
+            created_at: user.created_at, 
+        }
+
             render json: {status: 200, user: user, token: @new_token, refresh_token: @new_refresh_token}, status: 200
         else 
             render json: {status: 400, error: user.errors.full_messages[0], token: @new_token, refresh_token: @new_refresh_token}, status: 400

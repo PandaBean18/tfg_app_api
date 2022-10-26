@@ -1,7 +1,7 @@
 class Post < ApplicationRecord
     validates :post_id, :author_id, :heading, :description, :reference_number, :longitude, :latitude, presence: true 
     validates :post_id, uniqueness: true 
-    validate :ensure_valid_latitude, :ensure_valid_longitude
+    validate :ensure_valid_latitude, :ensure_valid_longitude, :ensure_valid_phone_number
     before_validation :ensure_post_id
 
     belongs_to(
@@ -44,4 +44,10 @@ class Post < ApplicationRecord
             errors.add(:longitude, 'is not valid.')
         end
     end
+
+    def ensure_valid_phone_number
+        if self.phone.class == String && ((self.phone.to_i / 1000000000) == 0 || (self.phone.to_i / 1000000000) > 9)
+            errors.add(:phone_number, "is not valid.")
+        end
+    end 
 end

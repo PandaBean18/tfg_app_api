@@ -1,4 +1,4 @@
-class Post < ApplicationRecord
+class RescueRequest < ApplicationRecord
     validates :post_id, :author_id, :heading, :description, :reference_number, :longitude, :latitude, presence: true 
     validates :post_id, uniqueness: true 
     validate :ensure_valid_latitude, :ensure_valid_longitude, :ensure_valid_phone_number

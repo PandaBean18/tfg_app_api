@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_26_131114) do
+ActiveRecord::Schema.define(version: 2022_10_26_181943) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "posts", force: :cascade do |t|
-    t.string "post_id", null: false
+  create_table "rescue_requests", force: :cascade do |t|
+    t.string "rescue_request_id", null: false
     t.string "author_id", null: false
     t.string "heading", null: false
     t.string "description", null: false
@@ -25,8 +25,8 @@ ActiveRecord::Schema.define(version: 2022_10_26_131114) do
     t.string "latitude", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["author_id"], name: "index_posts_on_author_id"
-    t.index ["post_id"], name: "index_posts_on_post_id", unique: true
+    t.index ["author_id"], name: "index_rescue_requests_on_author_id"
+    t.index ["rescue_request_id"], name: "index_rescue_requests_on_rescue_request_id", unique: true
   end
 
   create_table "users", force: :cascade do |t|

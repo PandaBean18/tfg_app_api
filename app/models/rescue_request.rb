@@ -3,7 +3,7 @@ class RescueRequest < ApplicationRecord
     validates :rescue_request_id, uniqueness: true 
     validates :closed, inclusion: { in: [true, false] }
     validate :ensure_valid_latitude, :ensure_valid_longitude, :ensure_valid_phone_number
-    before_validation :ensure_rescue_request_id
+    before_validation :ensure_rescue_request_id, :ensure_maps_url
 
     belongs_to(
         :author, 
@@ -51,4 +51,9 @@ class RescueRequest < ApplicationRecord
             errors.add(:reference_number, "is not valid.")
         end
     end 
+
+    def ensure_maps_url
+        self.maps_url = "https://google.com/maps/search/?api=1&query=#{self.latitude},#{self.longitude}"
+    end 
+    
 end

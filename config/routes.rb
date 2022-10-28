@@ -14,5 +14,7 @@ Rails.application.routes.draw do
 
     # posts routes 
     post('/rr', to: 'rescue_requests#create')
+    get('/rr/all', to: 'rescue_requests#index')
     get('/rr/:id', to: 'rescue_requests#show')
+
 end

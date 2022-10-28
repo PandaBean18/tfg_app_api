@@ -9,8 +9,8 @@ class User < ApplicationRecord
     validate :ensure_valid_mail, :ensure_valid_phone_number
 
     has_many(
-        :posts, 
-        class_name: 'Post',
+        :rescue_requests, 
+        class_name: 'RescueRequest',
         foreign_key: 'author_id', 
         primary_key: 'user_id', 
         dependent: :destroy

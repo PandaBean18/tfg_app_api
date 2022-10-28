@@ -1,8 +1,9 @@
 class RescueRequest < ApplicationRecord
     validates :rescue_request_id, :author_id, :heading, :description, :reference_number, :longitude, :latitude, presence: true 
     validates :rescue_request_id, uniqueness: true 
+    validates :closed, inclusion: { in: [true, false] }
     validate :ensure_valid_latitude, :ensure_valid_longitude, :ensure_valid_phone_number
-    before_validation :ensure_post_id
+    before_validation :ensure_rescue_request_id
 
     belongs_to(
         :author, 
@@ -13,7 +14,7 @@ class RescueRequest < ApplicationRecord
 
     private 
 
-    def ensure_rescue_requesr_id
+    def ensure_rescue_request_id
         if self.rescue_request_id
             return nil 
         end 
@@ -21,9 +22,9 @@ class RescueRequest < ApplicationRecord
         rescue_request_id = SecureRandom::urlsafe_base64(8)
         rescue_request = RescueRequest.find_by(rescue_request_id: rescue_request_id)
 
-        while post 
+        while rescue_request 
             rescue_request_id = SecureRandom::urlsafe_base64(8)
-            rescue_request = RescueRequest.find_by(post_id: post_id)
+            rescue_request = RescueRequest.find_by(rescue_request_id: rescue_request_id)
         end 
 
         self.rescue_request_id = rescue_request_id
@@ -46,8 +47,8 @@ class RescueRequest < ApplicationRecord
     end
 
     def ensure_valid_phone_number
-        if self.phone.class == String && ((self.phone.to_i / 1000000000) == 0 || (self.phone.to_i / 1000000000) > 9)
-            errors.add(:phone_number, "is not valid.")
+        if self.reference_number.class == String && ((self.reference_number.to_i / 1000000000) == 0 || (self.reference_number.to_i / 1000000000) > 9)
+            errors.add(:reference_number, "is not valid.")
         end
     end 
 end

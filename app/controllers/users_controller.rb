@@ -41,7 +41,7 @@ class UsersController < ApplicationController
             phone: user.phone, 
             admin: user.admin, 
             created_at: user.created_at, 
-        }
+            }
 
             render json: {status: 200, user: user, token: @new_token, refresh_token: @new_refresh_token}, status: 200
         else 

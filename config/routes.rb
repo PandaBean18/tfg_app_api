@@ -13,5 +13,6 @@ Rails.application.routes.draw do
     post('/logout', to: 'authentication#logout')
 
     # posts routes 
-    post('/post', to: 'posts#create')
+    post('/rr', to: 'rescue_requests#create')
+    get('/rr/:id', to: 'rescue_requests#show')
 end

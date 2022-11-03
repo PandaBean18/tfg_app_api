@@ -34,6 +34,17 @@ class RescueRequestsController < ApplicationController
         render json: {status: 200, post: rescue_requests, new_token: @new_token, new_refresh_token: @new_refresh_token}, status: 200
     end
 
+    def destroy: 
+        rescue_request_id = params[:id]
+        rescue_request = RescueRequest.find_by(rescue_request_id: rescue_request_id)
+        if rescue_request && rescue_request.author == @current_user
+            rescue_request.destroy
+            render json: {status: 200}, status: 200
+        else  
+            render json: {status: 404}, status: 404
+        end
+    end
+
     private 
 
     def rescue_request_params

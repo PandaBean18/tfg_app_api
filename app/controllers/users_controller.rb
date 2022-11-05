@@ -34,23 +34,25 @@ class UsersController < ApplicationController
             @new_refresh_token = JsonWebToken.encode(payload, 480.hours.from_now)
 
             user = {
-            first_name: user.first_name,
-            last_name: user.last_name, 
-            username: user.username, 
-            mail: user.mail, 
-            phone: user.phone, 
-            admin: user.admin, 
-            created_at: user.created_at, 
+                user_id: user.user_id,
+                first_name: user.first_name,
+                last_name: user.last_name, 
+                username: user.username, 
+                mail: user.mail, 
+                phone: user.phone, 
+                admin: user.admin, 
+                created_at: user.created_at, 
             }
 
             render json: {status: 200, user: user, token: @new_token, refresh_token: @new_refresh_token}, status: 200
         else 
-            render json: {status: 400, error: user.errors.full_messages[0], token: @new_token, refresh_token: @new_refresh_token}, status: 400
+            render json: {status: 400, error: user.errors.full_messages[0]}, status: 400
         end
     end 
 
     def show 
         user = {
+            user_id: @current_user.user_id,
             first_name: @current_user.first_name,
             last_name: @current_user.last_name, 
             username: @current_user.username, 
@@ -59,12 +61,13 @@ class UsersController < ApplicationController
             admin: @current_user.admin, 
             created_at: @current_user.created_at, 
         }
-        render json: {user: user, token: @new_token, refresh_token: @new_refresh_token}, status: 200 
+        render json: {status: 200, user: user}, status: 200 
     end
 
     def update
         if @current_user.update(edit_user_params)
             user = {
+                user_id: @current_user.user_id,
                 first_name: @current_user.first_name,
                 last_name: @current_user.last_name, 
                 username: @current_user.username, 
@@ -73,17 +76,17 @@ class UsersController < ApplicationController
                 admin: @current_user.admin, 
                 created_at: @current_user.created_at, 
             }
-            render json: {user: user, token: @new_token, refresh_token: @new_refresh_token} , status: 200 
+            render json: {status: 200, user: user} , status: 200 
         else  
-            render json: {status: 422, error: @current_user.errors.full_messages[0], token: @new_token, refresh_token: @new_refresh_token}, status: :unprocessable_entity 
+            render json: {status: 422, error: @current_user.errors.full_messages[0]}, status: :unprocessable_entity 
         end 
     end 
 
     def update_password
         if @current_user.update(edit_user_password_params)
-            render json: {status: 200, token: @new_token, refresh_token: @new_refresh_token}, status: 200
+            render json: {status: 200}, status: 200
         else  
-            render json: {status: 422, error: @current_user.errors.full_messages[0], token: @new_token, refresh_token: @new_refresh_token}, status: :unprocessable_entity 
+            render json: {status: 422, error: @current_user.errors.full_messages[0]}, status: :unprocessable_entity 
         end 
     end
 

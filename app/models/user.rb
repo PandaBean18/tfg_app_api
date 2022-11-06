@@ -1,7 +1,8 @@
 class User < ApplicationRecord
     attr_reader :password 
 
-    validates :user_id, :username, :mail, :phone, :password_digest, presence: true, uniqueness: true
+    validates :user_id, :username, :mail, :phone, :password_digest, presence: true
+    validates :user_id, :username, :mail, :phone, uniqueness: true
     validates :first_name, :session_token, presence: true 
     validates :admin, inclusion: { in: [true, false] }
     validates :password, length: { minimum: 6, allow_nil: true }
@@ -10,7 +11,7 @@ class User < ApplicationRecord
 
     has_many(
         :rescue_requests, 
-        class_name: 'RescueRequest ',
+        class_name: 'RescueRequest',
         foreign_key: 'author_id', 
         primary_key: 'user_id', 
         dependent: :destroy

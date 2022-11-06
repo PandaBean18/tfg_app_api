@@ -3,12 +3,12 @@ class UsersController < ApplicationController
 
     def create 
         current_user_params = user_params
-        first_name = current_user_params[:first_name]
-        last_name = current_user_params[:last_name] == '' ? nil : current_user_params[:last_name]
-        username = current_user_params[:username]
-        password = current_user_params[:password]
-        mail = current_user_params[:mail]
-        phone = current_user_params[:phone]
+        first_name = current_user_params[:first_name].strip 
+        last_name = current_user_params[:last_name] == '' ? nil : current_user_params[:last_name].strip 
+        username = current_user_params[:username].strip
+        password = current_user_params[:password].strip
+        mail = current_user_params[:mail].strip
+        phone = current_user_params[:phone].strip
 
         user = User.new(
             {
@@ -65,7 +65,22 @@ class UsersController < ApplicationController
     end
 
     def update
-        if @current_user.update(edit_user_params)
+        current_user_params = edit_user_params
+        first_name = current_user_params[:first_name].nil? ? @current_user.first_name : current_user_params[:first_name].strip
+        last_name = current_user_params[:last_name].nil? ? @current_user.last_name : current_user_params[:last_name].strip 
+        username = current_user_params[:username].nil? ? @current_user.username : current_user_params[:username].strip 
+        mail = current_user_params[:mail].nil? ? @current_user.mail : current_user_params[:mail].strip 
+        phone = current_user_params[:phone].nil? ? @current_user.phone : current_user_params[:phone].strip
+
+        if @current_user.update(
+            {
+                first_name: first_name, 
+                last_name: last_name, 
+                username: username, 
+                mail: mail, 
+                phone: phone
+            }
+        )
             user = {
                 user_id: @current_user.user_id,
                 first_name: @current_user.first_name,

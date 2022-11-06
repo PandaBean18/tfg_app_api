@@ -10,7 +10,7 @@ class User < ApplicationRecord
 
     has_many(
         :rescue_requests, 
-        class_name: 'RescueRequest',
+        class_name: 'RescueRequest ',
         foreign_key: 'author_id', 
         primary_key: 'user_id', 
         dependent: :destroy

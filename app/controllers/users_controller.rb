@@ -45,7 +45,7 @@ class UsersController < ApplicationController
                 created_at: user.created_at, 
             }
 
-            UserMailer.with(user: @current_user).welcome_mail.deliver_later
+            # UserMailer.with(user: @current_user).welcome_mail.deliver_later
             render json: {status: 200, user: user, token: @new_token, refresh_token: @new_refresh_token}, status: 200
         else 
             render json: {status: 400, error: user.errors.full_messages[0]}, status: 400

@@ -3,8 +3,8 @@
 ## Endpoints 
 | HTTP method | endpoint |                     usage                     |
 | :---------: | :------: | :-------------------------------------------: |
-| GET         | /user/me | Get the current user                          |
-| GET         | /user/:id| Get the user with the given ID                |
+| GET         | /users/me| Get the current user                          |
+| GET         |/users/:id| Get the user with the given ID                |
 | POST        | /user    | Create a new user                             |
 | PATCH       | /user    | Updates the current user                      |
 | DELETE      | /user    | Delete current user from the data base        |

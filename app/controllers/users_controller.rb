@@ -51,17 +51,37 @@ class UsersController < ApplicationController
     end 
 
     def show 
-        user = {
-            user_id: @current_user.user_id,
-            first_name: @current_user.first_name,
-            last_name: @current_user.last_name, 
-            username: @current_user.username, 
-            mail: @current_user.mail, 
-            phone: @current_user.phone, 
-            admin: @current_user.admin, 
-            created_at: @current_user.created_at, 
-        }
-        render json: {status: 200, user: user}, status: 200 
+        id = params[:id]
+        if id == 'me'
+            user = {
+                user_id: @current_user.user_id,
+                first_name: @current_user.first_name,
+                last_name: @current_user.last_name, 
+                username: @current_user.username, 
+                mail: @current_user.mail, 
+                phone: @current_user.phone, 
+                admin: @current_user.admin, 
+                created_at: @current_user.created_at, 
+            }
+            render json: {status: 200, user: user}, status: 200 
+        else  
+            user = User.find_by(user_id: id)
+            if user 
+                user = {
+                    user_id: user.user_id,
+                    first_name: user.first_name,
+                    last_name: user.last_name, 
+                    username: user.username, 
+                    mail: user.mail, 
+                    phone: user.phone, 
+                    admin: user.admin, 
+                    created_at: user.created_at, 
+                }
+                render json: {status: 200, user: user}, status: 200 
+            else 
+                render json: {status: 404, error: 'User not found'}, status: 404
+            end
+        end
     end
 
     def update

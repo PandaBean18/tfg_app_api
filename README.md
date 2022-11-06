@@ -1,6 +1,15 @@
-# Http status codes 
-Status codes are added in the JSON object and can be accessed by using 'status' key
-## User 
+# User 
+
+## Endpoints 
+| HTTP method | endpoint |                     usage                     |
+| :---------: | :------: | :-------------------------------------------: |
+| GET         | /user/me | Get the current user                          |
+| GET         | /user/:id| Get the user with the given ID                |
+| POST        | /user    | Create a new user                             |
+| PATCH       | /user    | Updates the current user                      |
+| DELETE      | /user    | Delete current user from the data base        |
+
+## HTTP status codes
 200: Ok
 
 400: Bad request (Invalid input), error message is provided, can be accessed from the JSON object by using 'error' key.

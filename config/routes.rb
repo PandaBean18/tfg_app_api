@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     get('/rr/all', to: 'rescue_requests#index')
     get('/rr/:id', to: 'rescue_requests#show')
     patch('/rr/:id', to: 'rescue_requests#update')
+    patch('/rr/:id/close', to: 'rescue_requests#close')
     delete('/rr/:id', to: 'rescue_requests#destroy')
 
 end

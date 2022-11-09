@@ -59,6 +59,17 @@ class RescueRequestsController < ApplicationController
         end
     end
 
+    def close 
+        rescue_request_id = params[:id]
+        rescue_request = RescueRequest.find_by(rescue_request_id: rescue_request_id)
+        if rescue_request && (@current_user.admin || rescue_request.author_id == @current_user.user_id)
+            rescue_request.update(closed: true)
+            render json: {status: 200}, status: 200
+        else 
+            render json: {status: 404}, status: 404
+        end
+    end
+
     private 
 
     def rescue_request_params

@@ -30,7 +30,7 @@ class RescueRequestsController < ApplicationController
 
     # update this method to return so that new posts show on top
     def index 
-        rescue_requests = RescueRequest.all 
+        rescue_requests = RescueRequest.where(closed: false)
         render json: {status: 200, posts: rescue_requests}, status: 200
     end
 

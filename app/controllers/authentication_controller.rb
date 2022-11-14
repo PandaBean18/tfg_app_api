@@ -30,7 +30,7 @@ class AuthenticationController < ApplicationController
 
             render json: {status: 200, user: user, token: @new_token, refresh_token: @new_refresh_token}, status: 200
         else 
-            render json: {status: 401, error: 'Failed login.'}
+            render json: {status: 401, error: 'Failed login.'}, status: 401
         end        
     end
 

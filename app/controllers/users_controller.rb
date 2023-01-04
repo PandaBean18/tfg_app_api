@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-    before_action :authorize_request, except: :create
+    before_action :authorize_request, except: [:create, :avatar]
 
     def create 
         current_user_params = user_params
@@ -21,7 +21,7 @@ class UsersController < ApplicationController
                 admin: false
             }
         )
-
+        user.avatar.attach(current_user_params[:avatar])
         if user.save
             @current_user = user 
             session_token = user.session_token
@@ -132,10 +132,14 @@ class UsersController < ApplicationController
         render json: {status: 200}
     end
 
+    def avatar
+        redirect_to(url_for(User.last.avatar), status: 301)
+    end
+
     private
 
     def user_params
-        return params.require(:user).permit(:first_name, :last_name, :username, :password, :mail, :phone)
+        return params.require(:user).permit(:first_name, :last_name, :username, :password, :mail, :phone, :avatar)
     end 
 
     def edit_user_params 

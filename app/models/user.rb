@@ -1,5 +1,6 @@
 class User < ApplicationRecord
     attr_reader :password 
+    has_one_attached :avatar
 
     validates :user_id, :username, :mail, :phone, :password_digest, presence: true
     validates :user_id, :username, :mail, :phone, uniqueness: true

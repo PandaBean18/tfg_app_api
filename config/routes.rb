@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     patch('/user', to: 'users#update')
     delete('/user', to: 'user#destroy')
     patch('/update_password', to: 'users#update_password')
+    get('/user/avatar', to: 'users#avatar')
 
     # authentication routes
     post('/auth/login', to: 'authentication#login')

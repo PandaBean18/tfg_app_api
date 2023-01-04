@@ -6,7 +6,7 @@ class AuthenticationController < ApplicationController
         password = login_params[:password]
 
         user = User.find_by_credentials(username, password)
-
+        puts user
         if user 
             session_token = user.session_token
             payload = {
